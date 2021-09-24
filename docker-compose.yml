@@ -1,0 +1,80 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+    restart: always
+    ports:
+      - '3000'
+    volumes:
+      - ./:/app
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - "5435:5435"
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    env_file:
+      - docker.env
+    networks:
+      - postgres
+
+  pgadmin:
+    links:
+      - postgres:postgres
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80"
+    volumes:
+      - /data/pgadmin:/root/.pgadmin
+    env_file:
+      - docker.env
+    networks:
+      - postgres
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  database_data:
+    driver: local
+
+
+
+#
+#version: '3'
+#
+#services:
+#  database:
+#    image: postgres:latest
+#    restart: always
+#    ports:
+#      - "5434:5432"
+#    environment:
+#      POSTGRES_PASSWORD: 'pgpass'
+#    volumes:
+#      - database_data:/var/lib/postgresql/data
+#
+#  api:
+#    build: .
+#    expose:
+#      - 8080
+#    ports:
+#      - "8080:8080"
+#    volumes:
+#      - ./app:/usr/src/app/
+#    links:
+#      - database
+#    environment:
+#      PGHOST: 'localhost'
+#      PGDATABASE: 'pgdb'
+#      PGUSER: 'pguser'
+#      PGPASSWORD: 'pgpass'
+#
+#
+#volumes:
+#  database_data:
+#    driver: local
