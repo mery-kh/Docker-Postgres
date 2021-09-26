@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { createConnection } from 'typeorm';
 import App from './app';
 import config from './ormconfig';
-import PostController from './post/post.controller';
+import BookController from './controller/book.controller';
 
 (async () => {
     try {
@@ -14,7 +14,7 @@ import PostController from './post/post.controller';
     }
     const app = new App(
         [
-            new PostController()
+            new BookController()
         ],
         5000
     );

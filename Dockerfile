@@ -13,5 +13,7 @@ COPY package.json package-lock.json /app/
 
 RUN npm install
 
+EXPOSE 8000
+
 # Run app using nodemon
 CMD npm run dev
